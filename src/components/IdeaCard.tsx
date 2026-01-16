@@ -1,4 +1,4 @@
-import { useState } from 'react';
+eimport { useState } from 'react';
 import { Card, CardContent, CardHeader } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -60,6 +60,7 @@ export function IdeaCard({ idea, index }: IdeaCardProps) {
   const { user } = useAuth();
   const { updateIdeaStatus, deleteIdea } = useIdeas();
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
+  const [expanded, setExpanded] = useState(false);
   const isOwner = user?.id === idea.user_id;
   const status = statusConfig[idea.status];
 
