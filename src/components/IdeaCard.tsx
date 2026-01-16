@@ -140,16 +140,16 @@ export function IdeaCard({ idea, index }: IdeaCardProps) {
           <CardContent className="space-y-4">
           <div className="space-y-2 text-sm text-muted-foreground">
   {idea.description
-    .split(/\n|\.(?=\s)/)
-    .map(step => step.replace(/^\d+\.\s*/, '').trim())
-    .filter(step => step.length > 0)
-    .map((step, i) => (
-      <div key={i} className="flex items-start gap-2 leading-relaxed">
-        <span className="mt-1 h-1.5 w-1.5 rounded-full bg-muted-foreground" />
-        <span>{step}</span>
+    .split('\n')
+    .map(line => line.trim())
+    .filter(line => line.length > 0)
+    .map((line, i) => (
+      <div key={i} className="leading-relaxed">
+        {line}
       </div>
     ))}
 </div>
+
 
 
 
