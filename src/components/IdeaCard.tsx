@@ -140,14 +140,16 @@ export function IdeaCard({ idea, index }: IdeaCardProps) {
           <CardContent className="space-y-4">
            <ul className="space-y-2 text-sm text-muted-foreground list-decimal list-inside">
   {idea.description
-    .split('\n')
-    .filter(step => step.trim() !== '')
+    .split(/\n|\.(?=\s|$)/)
+    .map(step => step.trim())
+    .filter(step => step.length > 0)
     .map((step, i) => (
       <li key={i} className="leading-relaxed">
         {step}
       </li>
     ))}
 </ul>
+
 
             
             <div className="flex items-center justify-between border-t border-border/50 pt-4">
