@@ -139,16 +139,30 @@ export function IdeaCard({ idea, index }: IdeaCardProps) {
           
           <CardContent className="space-y-4">
           <div className="space-y-2 text-sm text-muted-foreground">
-  {idea.description
-    .split('\n')
-    .map(line => line.trim())
-    .filter(line => line.length > 0)
-    .map((line, i) => (
-      <div key={i} className="leading-relaxed">
-        {line}
-      </div>
-    ))}
+  <div
+    className={`leading-relaxed transition-all ${
+      expanded ? '' : 'line-clamp-4'
+    }`}
+  >
+    {idea.description
+      .split('\n')
+      .map(line => line.trim())
+      .filter(line => line.length > 0)
+      .map((line, i) => (
+        <div key={i}>{line}</div>
+      ))}
+  </div>
+
+  {idea.description.length > 200 && (
+    <button
+      onClick={() => setExpanded(!expanded)}
+      className="text-xs font-medium text-primary hover:underline"
+    >
+      {expanded ? 'Read less' : 'Read more'}
+    </button>
+  )}
 </div>
+
 
 
 
