@@ -8,7 +8,9 @@ interface HeaderProps {
 }
 
 export function Header({ onAuthClick }: HeaderProps) {
-  const { user, signOut } = useAuth();
+  const { user, profile, signOut } = useAuth();
+
+  const displayName = profile?.full_name || user?.email?.split('@')[0] || 'User';
 
   return (
     <motion.header
@@ -32,7 +34,7 @@ export function Header({ onAuthClick }: HeaderProps) {
               <div className="flex items-center gap-2 rounded-full bg-muted px-3 py-1.5">
                 <User className="h-4 w-4 text-muted-foreground" />
                 <span className="text-sm font-medium text-foreground">
-                  {user.email?.split('@')[0]}
+                  {displayName}
                 </span>
               </div>
               <Button
