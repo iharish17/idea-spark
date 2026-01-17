@@ -6,6 +6,7 @@ import { AuthDialog } from '@/components/AuthDialog';
 import { IdeaFormDialog } from '@/components/IdeaFormDialog';
 import { toast } from 'sonner';
 import { useAuth } from '@/hooks/useAuth';
+import { motion } from 'framer-motion';
 
 const Index = () => {
   const [authDialogOpen, setAuthDialogOpen] = useState(false);
@@ -31,18 +32,28 @@ const Index = () => {
           onAuthRequired={() => setAuthDialogOpen(true)} 
         />
         
-        <section className="container mx-auto px-4 py-12">
-          <div className="mb-8">
+        <motion.section 
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 0.3 }}
+          className="container mx-auto px-4 py-12"
+        >
+          <motion.div 
+            initial={{ opacity: 0, x: -20 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.5, delay: 0.4 }}
+            className="mb-8"
+          >
             <h2 className="font-display text-2xl font-bold text-foreground sm:text-3xl">
               Community Ideas
             </h2>
             <p className="mt-1 text-muted-foreground">
               Explore ideas from our community and track their journey
             </p>
-          </div>
+          </motion.div>
           
           <IdeasGrid />
-        </section>
+        </motion.section>
       </main>
 
       <AuthDialog open={authDialogOpen} onOpenChange={setAuthDialogOpen} />

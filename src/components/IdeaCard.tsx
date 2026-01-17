@@ -85,10 +85,13 @@ export function IdeaCard({ idea, index }: IdeaCardProps) {
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
+        exit={{ opacity: 0, y: -20, scale: 0.95 }}
         transition={{ duration: 0.4, delay: index * 0.05 }}
+        layout
+        whileHover={{ y: -4 }}
       >
         <Card 
-          className="group relative overflow-hidden border-border/50 bg-card shadow-card transition-all duration-300 hover:-translate-y-1 hover:shadow-hover cursor-pointer"
+          className="group relative overflow-hidden border-border/50 bg-card shadow-card transition-all duration-300 hover:shadow-hover cursor-pointer"
           onClick={handleCardClick}
         >
           <CardHeader className="pb-3">
