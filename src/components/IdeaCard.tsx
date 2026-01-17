@@ -32,6 +32,7 @@ import {
   Calendar
 } from 'lucide-react';
 import { formatDistanceToNow } from 'date-fns';
+import { IdeaDetailDialog } from './IdeaDetailDialog';
 
 interface IdeaCardProps {
   idea: Idea;
@@ -60,7 +61,7 @@ export function IdeaCard({ idea, index }: IdeaCardProps) {
   const { user } = useAuth();
   const { updateIdeaStatus, deleteIdea } = useIdeas();
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
-  const [expanded, setExpanded] = useState(false);
+  const [detailDialogOpen, setDetailDialogOpen] = useState(false);
   const isOwner = user?.id === idea.user_id;
   const status = statusConfig[idea.status];
 
@@ -73,6 +74,12 @@ export function IdeaCard({ idea, index }: IdeaCardProps) {
     setDeleteDialogOpen(false);
   };
 
+  const handleCardClick = (e: React.MouseEvent) => {
+    // Don't open dialog if clicking on dropdown or buttons
+    if ((e.target as HTMLElement).closest('button, [role="menuitem"]')) return;
+    setDetailDialogOpen(true);
+  };
+
   return (
     <>
       <motion.div
@@ -80,7 +87,10 @@ export function IdeaCard({ idea, index }: IdeaCardProps) {
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.4, delay: index * 0.05 }}
       >
-        <Card className="group relative overflow-hidden border-border/50 bg-card shadow-card transition-all duration-300 hover:-translate-y-1 hover:shadow-hover">
+        <Card 
+          className="group relative overflow-hidden border-border/50 bg-card shadow-card transition-all duration-300 hover:-translate-y-1 hover:shadow-hover cursor-pointer"
+          onClick={handleCardClick}
+        >
           <CardHeader className="pb-3">
             <div className="flex items-start justify-between gap-4">
               <div className="flex-1 space-y-1">
@@ -139,32 +149,19 @@ export function IdeaCard({ idea, index }: IdeaCardProps) {
           </CardHeader>
           
           <CardContent className="space-y-4">
-         <div className="space-y-2 text-sm text-muted-foreground">
-  <div
-    className={`leading-relaxed transition-all ${
-      expanded ? '' : 'line-clamp-4'
-    }`}>
-    {idea.description
-      .split('\n')
-      .map(line => line.trim())
-      .filter(line => line.length > 0)
-      .map((line, i) => (
-        <div key={i}>{line}</div>
-      ))}
-  </div>
-
-  {idea.description.length > 200 && (
-    <button onClick={() => setExpanded(!expanded)} className="text-xs font-medium text-primary hover:underline">
-      {expanded ? 'Read less' : 'Read more'}
-    </button>
-  )}
-</div>
-
-
-
-
-
-
+            <div className="space-y-2 text-sm text-muted-foreground">
+              <div className="leading-relaxed line-clamp-3">
+                {idea.description}
+              </div>
+              {idea.description.length > 120 && (
+                <button 
+                  onClick={() => setDetailDialogOpen(true)} 
+                  className="text-xs font-medium text-primary hover:underline"
+                >
+                  Read more
+                </button>
+              )}
+            </div>
             
             <div className="flex items-center justify-between border-t border-border/50 pt-4">
               <div className="flex items-center gap-2 text-sm text-muted-foreground">
@@ -199,6 +196,12 @@ export function IdeaCard({ idea, index }: IdeaCardProps) {
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>
+
+      <IdeaDetailDialog 
+        idea={idea} 
+        open={detailDialogOpen} 
+        onOpenChange={setDetailDialogOpen} 
+      />
     </>
   );
 }
