@@ -24,6 +24,12 @@ export interface CreateIdeaData {
   author_name: string;
 }
 
+export interface UpdateIdeaData {
+  title: string;
+  description: string;
+  domain?: string;
+}
+
 export function useIdeas() {
   const [ideas, setIdeas] = useState<Idea[]>([]);
   const [loading, setLoading] = useState(true);
@@ -122,11 +128,32 @@ export function useIdeas() {
     return { error: null };
   };
 
+  const updateIdea = async (id: string, data: UpdateIdeaData) => {
+    const { error } = await supabase
+      .from('ideas')
+      .update({
+        title: data.title,
+        description: data.description,
+        domain: data.domain || null,
+      })
+      .eq('id', id);
+
+    if (error) {
+      console.error('Error updating idea:', error);
+      toast.error('Failed to update idea');
+      return { error };
+    }
+
+    toast.success('Idea updated!');
+    return { error: null };
+  };
+
   return {
     ideas,
     loading,
     createIdea,
     updateIdeaStatus,
+    updateIdea,
     deleteIdea,
     refetch: fetchIdeas,
   };

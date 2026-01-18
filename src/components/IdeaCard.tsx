@@ -29,10 +29,12 @@ import {
   Rocket,
   User,
   Tag,
-  Calendar
+  Calendar,
+  Pencil
 } from 'lucide-react';
 import { formatDistanceToNow } from 'date-fns';
 import { IdeaDetailDialog } from './IdeaDetailDialog';
+import { IdeaEditDialog } from './IdeaEditDialog';
 
 interface IdeaCardProps {
   idea: Idea;
@@ -62,6 +64,7 @@ export function IdeaCard({ idea, index }: IdeaCardProps) {
   const { updateIdeaStatus, deleteIdea } = useIdeas();
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
   const [detailDialogOpen, setDetailDialogOpen] = useState(false);
+  const [editDialogOpen, setEditDialogOpen] = useState(false);
   const isOwner = user?.id === idea.user_id;
   const status = statusConfig[idea.status];
 
@@ -138,6 +141,10 @@ export function IdeaCard({ idea, index }: IdeaCardProps) {
                       <CheckCircle2 className="mr-2 h-4 w-4" />
                       Mark Completed
                     </DropdownMenuItem>
+                    <DropdownMenuItem onClick={() => setEditDialogOpen(true)}>
+                      <Pencil className="mr-2 h-4 w-4" />
+                      Edit
+                    </DropdownMenuItem>
                     <DropdownMenuItem
                       onClick={() => setDeleteDialogOpen(true)}
                       className="text-destructive focus:text-destructive"
@@ -204,6 +211,12 @@ export function IdeaCard({ idea, index }: IdeaCardProps) {
         idea={idea} 
         open={detailDialogOpen} 
         onOpenChange={setDetailDialogOpen} 
+      />
+
+      <IdeaEditDialog
+        idea={idea}
+        open={editDialogOpen}
+        onOpenChange={setEditDialogOpen}
       />
     </>
   );
